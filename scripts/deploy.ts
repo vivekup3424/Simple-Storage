@@ -1,5 +1,6 @@
-import { ethers } from "hardhat";
-
+import { ethers, run } from "hardhat";
+//we can use any task from hardhat using the run package
+// run allows us to run any hardhat task
 async function main() {
     const SimpleStorageFactory = await ethers.getContractFactory(
         "SimpleStorage"
@@ -18,11 +19,24 @@ async function main() {
 
     //for deploying we need private key and the rpc url of the blockchain
     console.log(`Deployed Contract to: ${simpleStorage.address}`);
+    verify(simpleStorage.address, []);
 }
-
+async function verify(contractAddress: string, args: any) {
+    //automatically verify our contract
+    //we are going to add haraht etherscan plugin to make the
+    //contract verification very easier
+    console.log("Verifying...");
+    await run("verify:verify", {
+        //subtask of verify task
+        address: contractAddress,
+        constructorArguments: args,
+    }); //equivalent == ```yarn hardhat verify``` command
+}
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
-});
+main()
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error);
+        process.exitCode = 1;
+    });

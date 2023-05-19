@@ -1,7 +1,14 @@
+//entry point for all the scripts
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+import "@nomiclabs/hardhat-etherscan";
+require("dotenv").config();
 const PRIVATE_KEY =
-    "bc6d04b0c1e8db5a7802d49d2d0c5e7cfc847bf5e9d9c66ecb6d9f768216d0d7";
+    process.env.PRIVATE_KEY ||
+    "fc557f254c276a9dc86dabf08a6886e0fe3b78e36e44028d56ab86491daa2a51";
+const ETHERSCAN_API_KEY =
+    process.env.ETHERSCAN_API_KEY || "IS5NBWY5V47IGVCJ54MGZ7IUVBU2XG93II";
+const SEPOLIA_RPC_URL = process.env.SEPOLIA_RPC_URL || "";
 const config: HardhatUserConfig = {
     solidity: "0.8.8",
     defaultNetwork: "hardhat",
@@ -11,6 +18,13 @@ const config: HardhatUserConfig = {
             chainId: 11155111,
             accounts: [PRIVATE_KEY],
         },
+        localhost: {
+            url: "http://localhost:8545",
+            chainId: 31337,
+        },
+    },
+    etherscan: {
+        apiKey: ETHERSCAN_API_KEY,
     },
 };
 
