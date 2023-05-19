@@ -2,12 +2,15 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "@nomiclabs/hardhat-etherscan";
-require("dotenv").config();
+import "hardhat-gas-reporter";
+import "dotenv/config";
+import "solidity-coverage";
 const PRIVATE_KEY =
     process.env.PRIVATE_KEY ||
     "fc557f254c276a9dc86dabf08a6886e0fe3b78e36e44028d56ab86491daa2a51";
 const ETHERSCAN_API_KEY =
     process.env.ETHERSCAN_API_KEY || "IS5NBWY5V47IGVCJ54MGZ7IUVBU2XG93II";
+const COINMARKET_API_KEY = "278ad6ce-0a63-40ce-9240-b4814ff7a5b8";
 const SEPOLIA_RPC_URL = process.env.SEPOLIA_RPC_URL || "";
 const config: HardhatUserConfig = {
     solidity: "0.8.8",
@@ -25,6 +28,15 @@ const config: HardhatUserConfig = {
     },
     etherscan: {
         apiKey: ETHERSCAN_API_KEY,
+    },
+    gasReporter: {
+        //gasReporter settings
+        enabled: true,
+        currency: "INR",
+        outputFile: "gas-report.txt",
+        noColors: true,
+        coinmarketcap: COINMARKET_API_KEY,
+        token: "MATIC",
     },
 };
 

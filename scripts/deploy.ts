@@ -1,4 +1,4 @@
-import { ethers, run } from "hardhat";
+import { ethers, run, network } from "hardhat";
 //we can use any task from hardhat using the run package
 // run allows us to run any hardhat task
 async function main() {
@@ -18,8 +18,24 @@ async function main() {
     //instance object once the transaction is confirmed.
 
     //for deploying we need private key and the rpc url of the blockchain
-    console.log(`Deployed Contract to: ${simpleStorage.address}`);
-    verify(simpleStorage.address, []);
+    // We only verify on a testnet!
+    if (network.config.chainId === 11155111) {
+        // 6 blocks is sort of a guess
+        await simpleStorage.deployTransaction.wait(6);
+        await verify(simpleStorage.address, []);
+    }
+    console.log("Simple Storage deployed to:", simpleStorage.address);
+
+    // Get the current value
+    let currentValue = await simpleStorage.retrieve();
+    console.log(`Current value: ${currentValue}`);
+
+    // Update the value
+    console.log("Updating contract...");
+    let transactionResponse = await simpleStorage.store(7);
+    await transactionResponse.wait(); // returns transaction receipt
+    currentValue = await simpleStorage.retrieve();
+    console.log(`Current value: ${currentValue}`);
 }
 async function verify(contractAddress: string, args: any) {
     //automatically verify our contract
@@ -40,3 +56,6 @@ main()
         console.error(error);
         process.exitCode = 1;
     });
+
+// yarn hardhat clean //to clean the cache and artifacts
+// solidity-coverage can help you write more comprehensive tests
