@@ -1,0 +1,24 @@
+06/06/2023 18:16
+I am going to see what are the things missing and what more can be refactored to make
+this project complete.
+```yarn hardhat coverage``` :- through this we can see the code coverage, 
+like for how much code, we have written test for.
+
+```yarn hardhat run scripts/deploy.js``` through this we are deploying our
+contract on the local network.
+We are also Verifying our contract here with the help of etherscan api key.
+*First we are getting the contractFactory from the ethers.
+*Then we are getting the contract from the factory.
+*Then we are deploying the contract.
+
+```yarn hardhat run scripts/deploy.js --network ropsten``` through this we are deploying our
+to testnet ropsten.
+
+Now I am going to write the necessary tests.
+
+06/06/2023 18:52
+Now, I have written all the unit tests for this SimpleStorage contract.
+Now, I am going to write the deploy script and wrap.
+
+
+
